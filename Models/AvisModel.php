@@ -6,6 +6,24 @@ require_once '../Core/DbConnect.php';
 class AvisModel extends DbConnect
 {
 
+    public function getAvisByProduit($id_produit)
+    {
+        // Requête SQL pour récupérer les avis du produit
+        $sql = "SELECT avis.*, utilisateurs.nom as auteur 
+                FROM avis 
+                JOIN utilisateurs ON avis.id_utilisateur = utilisateurs.id_utilisateur 
+                WHERE avis.id_produit = ?";
+
+        // Préparation de la requête
+        $stmt = $this->connection->prepare($sql);
+
+        // Exécution de la requête avec le paramètre id_produit
+        $stmt->execute([$id_produit]);
+
+        // Récupérer et retourner tous les résultats sous forme de tableau associatif
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     // public function select($avis)
     // {
     //     // Création d'une variable $id  pour getter l'id (la faire transiter):

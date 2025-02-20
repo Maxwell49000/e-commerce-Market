@@ -13,3 +13,23 @@
         <a href="index.php?controller=Produit&action=getProducts" class="btn-back">Retour à la liste des produits</a>
     </div>
 </div>
+
+<!-- Section des avis -->
+<h3>Avis :</h3>
+<?php if (!empty($avis)): ?>
+    <div class="reviews-container">
+        <?php foreach ($avis as $avisItem): ?>
+            <div class="review">
+                <div class="review-header">
+                    <strong class="author"><?= htmlspecialchars($avisItem['auteur']) ?></strong>
+                    <span class="rating"><?= $avisItem['note'] ?>/5</span>
+                </div>
+                <div class="review-body">
+                    <p class="comment"><?= htmlspecialchars($avisItem['commentaire']) ?></p>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+<?php else: ?>
+    <p>Aucun avis pour ce produit.</p>
+<?php endif; ?>

@@ -429,3 +429,56 @@ body {
     color: #666;
     margin: 5px 0;
 }
+
+/* Style général pour la section des avis */
+.reviews-container {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.review {
+    background-color: #fff;
+    margin-bottom: 15px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.author {
+    font-weight: bold;
+    color: #333;
+}
+
+.rating {
+    background-color: #ffcc00;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.review-body {
+    font-size: 14px;
+    color: #555;
+}
+
+.comment {
+    font-style: italic;
+    margin-top: 10px;
+}
+
+/* Style pour le message "Aucun avis" */
+.reviews-container p {
+    font-style: italic;
+    color: #999;
+}
