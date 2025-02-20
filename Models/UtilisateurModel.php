@@ -8,7 +8,7 @@ class UtilisateurModel extends DbConnect
     public function find($email)
     {
 
-        $this->request = $this->connection->prepare("SELECT * FROM utilisateur WHERE email = :email");
+        $this->request = $this->connection->prepare("SELECT * FROM utilisateurs WHERE email = :email");
         $this->request->bindParam(":email", $email);
         $this->request->execute();
         $user = $this->request->fetch();
@@ -18,42 +18,30 @@ class UtilisateurModel extends DbConnect
     public function findAll()
     {
         // Requête pour selectionner tous les champs de la table creation:
-        $this->request = "SELECT * FROM utilisateur";
+        $this->request = "SELECT * FROM utilisateurs";
         $result = $this->connection->query($this->request);
         $programmation = $result->fetchAll();
 
         return $programmation;
     }
 
-    public function search()
-    {
-        $query = $_POST['query'];
-        // var_dump($query);
-        // die;
 
-        $this->request = 'SELECT * FROM utilisateur WHERE nom LIKE "%' . $query . '%"  OR email LIKE "%' . $query . '%"';
-        $resultat = $this->connection->query($this->request);
-        $results = $resultat->fetchAll();
+    // public function delete($utilisateur)
+    // {
+    //     // Création d'une variable $id  pour getter l'id (la faire transiter):
+    //     $id = $utilisateur->getId_utilisateur();
 
-        return $results;
-    }
+    //     // Suppression des avis liés avant de supprimer l'utilisateur
+    //     $this->request = "DELETE FROM avis WHERE id_utilisateur = :id";
+    //     $stmt = $this->connection->prepare($this->request);
+    //     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    //     $stmt->execute();
 
-    public function delete($utilisateur)
-    {
-        // Création d'une variable $id  pour getter l'id (la faire transiter):
-        $id = $utilisateur->getId_utilisateur();
+    //     // Requête supprimant tous les champs de la table utilisateur ou l'id = l'id:
+    //     $this->request = "DELETE FROM utilisateurs WHERE id_utilisateur =  $id";
 
-        // Suppression des avis liés avant de supprimer l'utilisateur
-        $this->request = "DELETE FROM avis WHERE id_utilisateur = :id";
-        $stmt = $this->connection->prepare($this->request);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
-
-        // Requête supprimant tous les champs de la table utilisateur ou l'id = l'id:
-        $this->request = "DELETE FROM utilisateur WHERE id_utilisateur =  $id";
-
-        return $this->connection->exec($this->request);
-    }
+    //     return $this->connection->exec($this->request);
+    // }
 
 
     public function create($utilisateur)
@@ -68,7 +56,7 @@ class UtilisateurModel extends DbConnect
 
 
         // Requête pour inserer dans la BDD les valeurs précedement getté:
-        $this->request = 'INSERT INTO utilisateur VALUES (NULL, "' . $nom . '","' . $password . '", "' . $email . '", "' . 1 . '")';
+        $this->request = 'INSERT INTO utilisateurs VALUES (NULL, "' . $nom . '","' . $password . '", "' . $email . '", "' . 0 . '")';
 
         $success = $this->connection->exec($this->request);
 

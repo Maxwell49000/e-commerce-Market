@@ -1,3 +1,8 @@
+<?php if (!empty($_SESSION['error'])): ?>
+    <p style="color: red;"><?php echo $_SESSION['error'];
+                            unset($_SESSION['error']); ?></p>
+<?php endif; ?>
+
 <div class="card-footer text-center">
     <a href="index.php?controller=Utilisateur&action=inscription" class="btn btn-outline-light btn-lg">Inscription</a>
 </div>

@@ -25,22 +25,6 @@ class UtilisateurController extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $type = $_POST['type'] ?? null;
 
-
-            // Formulaire "Connexion sans inscription"
-            if ($type === 'sans_inscription') {
-                $nom = htmlspecialchars($_POST['nom'] ?? null);
-                if (!empty($nom)) {
-                    // Réinitialisation de la session
-                    session_unset();
-                    $_SESSION['nom'] = $nom;
-                    $_SESSION['statut'] = 'invite';
-
-                    // Redirection
-                    header("Location: index.php?controller=Home&action=homeAction");
-                    exit;
-                }
-            }
-
             // Formulaire "Connexion classique"
             if ($type === 'classique') {
                 $nom = htmlspecialchars($_POST['nom'] ?? null);
@@ -64,19 +48,23 @@ class UtilisateurController extends Controller
                             $_SESSION['id_utilisateur'] = $user->getId_utilisateur();
                             $_SESSION['statut'] = $user->getStatut();
 
-
-                            if ($_SESSION['statut'] == 0) {
-                                header("Location: index.php?controller=Admin&action=homeAdmin");
-                            } elseif ($_SESSION['statut'] == 1) {
-                                header("Location: index.php?controller=Home&action=homeAction");
-                            }
+                            header("Location: index.php?controller=Home&action=homeAction");
                             exit;
+                        } else {
+                            $_SESSION['error'] = "Mot de passe incorrect.";
                         }
+                    } else {
+                        $_SESSION['error'] = "Aucun compte trouvé avec cet email.";
                     }
+                } else {
+                    $_SESSION['error'] = "Tous les champs doivent être remplis.";
                 }
             }
         }
+        header("Location: index.php?controller=Utilisateur&action=formConnect"); // Redirige vers la page de connexion
+        exit;
     }
+
 
 
     // Fonction deconnection:
@@ -128,44 +116,29 @@ class UtilisateurController extends Controller
         $this->render('admin/displayUtilisateurAction', ['utilisateurs' => $utilisateurs, 'message' => $message]);
     }
 
-    public function find()
-    {
-        // Vérifie que l'utilisateur a bien envoyé une requête
-        if (!isset($_POST['query']) || empty(trim($_POST['query']))) {
-            return;
-        }
-
-        $query = htmlspecialchars($_POST['query']); // Nettoie l'entrée utilisateur
-
-        // Appel du modèle pour chercher les résultats
-        $utilisateurModel = new UtilisateurModel();
-        $results = $utilisateurModel->search($query);
-
-        // Envoie les résultats à la vue
-        $this->render('admin/searchUser', ['results' => $results]);
-    }
-
-    public function deleteUser()
-    {
 
 
-        // Définition et test de la variable $id contenant le GET de ID:
-        $id = isset($_GET['id']) ? $_GET['id'] : '';
+    // public function deleteUser()
+    // {
 
-        // Instanciation de la class Utilisateur et settage de l'ID:
-        $utilisateur = new Utilisateur();
-        $utilisateur->setId_utilisateur($id);
 
-        // Instanciation de la class UtilisateurModel et appel de la méthode "delete" (contenant uniquement la requete DELETE):
-        $deletemodel = new UtilisateurModel();
-        $success = $deletemodel->delete($utilisateur);
-        // var_dump($success);
-        // die;
-        $message = $success ? "Utilisateur bien suprimée." : "Suppression non effectuée.";
+    //     // Définition et test de la variable $id contenant le GET de ID:
+    //     $id = isset($_GET['id']) ? $_GET['id'] : '';
 
-        // Redirection:
-        header('location:index.php?controller=Utilisateur&action=displayUtilisateurAction&message=' . urlencode($message));
-    }
+    //     // Instanciation de la class Utilisateur et settage de l'ID:
+    //     $utilisateur = new Utilisateur();
+    //     $utilisateur->setId_utilisateur($id);
+
+    //     // Instanciation de la class UtilisateurModel et appel de la méthode "delete" (contenant uniquement la requete DELETE):
+    //     $deletemodel = new UtilisateurModel();
+    //     $success = $deletemodel->delete($utilisateur);
+    //     // var_dump($success);
+    //     // die;
+    //     $message = $success ? "Utilisateur bien suprimée." : "Suppression non effectuée.";
+
+    //     // Redirection:
+    //     header('location:index.php?controller=Utilisateur&action=displayUtilisateurAction&message=' . urlencode($message));
+    // }
 
     public function createUtilisateurAction()
     {

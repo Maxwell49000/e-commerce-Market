@@ -62,41 +62,11 @@ if (session_status() === PHP_SESSION_NONE) {
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
-
-                        <?php
-
-
-                        // // Debugging: afficher la valeur de $_SESSION['statut']
-                        // echo 'Statut de la session : ' . (isset($_SESSION['statut']) ? $_SESSION['statut'] : 'non défini') . '<br>';
-                        if (!isset($_SESSION['statut'])) { ?>
-                            <li class="nav-item"><a class="nav-link" href="index.php">Accueil</a></li>
-                            <li class="nav-item"><a class="nav-link" href="index.php?controller=Produit&action=getProducts">Produits</a></li>
-                            <li class="nav-item"><a class="nav-link" href="index.php?controller=Categorie&action=getCategory">Catégories</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                            <li class="nav-item"><a class="nav-link" href="index.php?controller=Panier&action=panierView"><i class="fa-solid fa-cart-shopping"></i></a></li>
-                        <?php
-                        }
-                        if (isset($_SESSION['statut']))
-                            // Vérification du statut pour l'administration (statut 0)
-                            if ($_SESSION['statut'] == '0'): ?>
-                            <li class="nav-item"><a class="nav-link" href="index.php?controller=Admin&action=homeAdmin">Accueil</a></li>
-                            <li class="nav-item"><a class="nav-link" href="index.php?controller=Admin&action=createProgrammationAction">Ajouter un évènement</a></li>
-                            <li class="nav-item"><a class="nav-link" href="index.php?controller=Avis&action=displayAvisAction">Gérer les commentaires</a></li>
-                            <li class="nav-item"><a class="nav-link" href="index.php?controller=Utilisateur&action=displayUtilisateurAction">Gérer les utilisateurs</a></li>
-                            <li class="nav-item"><a class="nav-link" href="index.php?controller=Admin&action=displayReservationAction">Gérer les réservations</a></li>
-                        <?php elseif ($_SESSION['statut'] === 'invite'): ?>
-                            <li class="nav-item"><a class="nav-link" href="index.php">Accueil</a></li>
-                            <li class="nav-item"><a class="nav-link" href="index.php?controller=Produit&action=getProducts">Produits</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                            <li class="nav-item"><a class="nav-link" href="index.php?controller=Panier&action=panierView"><i class="fa-solid fa-cart-shopping"></i></a></li>
-                        <?php elseif ($_SESSION['statut'] == '1'): ?>
-                            <li class="nav-item"><a class="nav-link" href="index.php">Accueil</a></li>
-                            <li class="nav-item"><a class="nav-link" href="index.php?controller=Produit&action=getProducts">Produits</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                            <li class="nav-item"><a class="nav-link" href="index.php?controller=Panier&action=panierView"><i class="fa-solid fa-cart-shopping"></i></a></li>
-
-
-                        <?php endif; ?>
+                        <li class="nav-item"><a class="nav-link" href="index.php">Accueil</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.php?controller=Produit&action=getProducts">Produits</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.php?controller=Categorie&action=getCategory">Catégories</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.php?controller=Panier&action=panierView"><i class="fa-solid fa-cart-shopping"></i></a></li>
                     </ul>
                 </div>
             </div>
