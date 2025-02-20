@@ -4,7 +4,7 @@ body {
 }
 
 header {
-    background: url('../public/IMG/cover.jpg') no-repeat center center / cover;
+    background: url('../public/IMG/cefiiMarket.png') no-repeat center center / cover;
     animation: backgroundAnimation 10s infinite ease-in-out;
 }
 
@@ -460,7 +460,7 @@ body {
 }
 
 .rating {
-    background-color: #ffcc00;
+    background-color: black;
     color: #fff;
     padding: 5px 10px;
     border-radius: 5px;
@@ -481,4 +481,122 @@ body {
 .reviews-container p {
     font-style: italic;
     color: #999;
+}
+
+.rating {
+    display: flex;
+    gap: 5px;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.star {
+    color: #ccc;
+    /* Étoiles grises par défaut */
+    transition: color 0.3s ease-in-out;
+}
+
+.star.selected {
+    color: #FFD700;
+    /* Jaune doré pour les étoiles sélectionnées */
+}
+
+.star:hover {
+    color: #FFA500;
+    /* Orange clair au survol */
+}
+
+.rating-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#rating-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Centrer le formulaire */
+.review-form {
+    width: 80%;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Zone de notation */
+.rating-container {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.rating-label {
+    font-size: 18px;
+    margin-bottom: 10px;
+    display: block;
+    font-weight: bold;
+    color: #333;
+}
+
+.rating {
+    font-size: 40px;
+    color: #ddd;
+    cursor: pointer;
+}
+
+.star.selected {
+    color: #ffcc00;
+}
+
+.rating-value {
+    font-size: 16px;
+    color: #333;
+    margin-top: 5px;
+}
+
+/* Commentaire */
+.textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    font-size: 16px;
+    min-height: 100px;
+    resize: vertical;
+}
+
+.textarea:focus {
+    border-color: #ffcc00;
+    outline: none;
+}
+
+/* Bouton */
+.submit-btn {
+    display: block;
+    width: 100%;
+    background-color: #ffcc00;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #ff9900;
 }

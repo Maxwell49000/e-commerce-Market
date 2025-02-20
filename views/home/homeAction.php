@@ -6,7 +6,6 @@
     <header class="bg-primary text-white text-center py-5">
         <div class="container">
             <h1 class="display-4">Bienvenue chez CEFii Market</h1>
-            <p class="lead">Un festival familial, culturel et festif à Angers.</p>
             <a href="#about" class="btn btn-outline-light btn-lg">En savoir plus</a>
         </div>
     </header>
@@ -15,48 +14,30 @@
     <section id="about" class="py-5">
         <div class="container text-center">
             <h2 class="mb-4">Qui sommes-nous ?</h2>
-            <p class="lead">CEFii Market est une association joyeuse et conviviale basée à Angers. Chaque année, nous organisons le festival "Festiv'All-en-Scène" qui rassemble toutes les générations dans une ambiance festive et inclusive.</p>
+            <p class="lead">CEFii Market est un site en ligne proposant différents produits.</p>
         </div>
     </section>
 
     <!-- Program Section -->
     <section id="program" class="py-5 bg-light">
         <div class="container">
-            <h2 class="text-center mb-4">Au programme</h2>
+            <h2 class="text-center mb-4">Explorez</h2>
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <div class="card shadow-sm">
-                        <a class="lien" href="index.php?controller=Programmation&action=eventShow&id=1"><img src="..//public/IMG/concert.jpg" class="card-img-top" alt="Concerts"></a>
+                        <a class="lien" href="index.php?controller=Produit&action=getProducts"><img src="..//public/IMG/produit.png" class="card-img-top" alt="Concerts"></a>
                         <div class="card-body">
-                            <h5 class="card-title">Concerts</h5>
-                            <p class="card-text">Des performances musicales pour tous les goûts.</p>
+                            <h5 class="card-title">Produits</h5>
+                            <p class="card-text">Découvrez nos produits.</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <div class="card shadow-sm">
-                        <a class="lien" href="index.php?controller=Programmation&action=eventShow&id=2"><img src="..//public/IMG/atelier.jpg" class="card-img-top" alt="Ateliers artistiques"></a>
+                        <a class="lien" href="index.php?controller=Categorie&action=getCategory"><img src="..//public/IMG/categorie.png" class="card-img-top" alt="Ateliers artistiques"></a>
                         <div class="card-body">
-                            <h5 class="card-title">Ateliers artistiques</h5>
-                            <p class="card-text">Exprimez votre créativité avec nos ateliers variés.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card shadow-sm">
-                        <a class="lien" href="index.php?controller=Programmation&action=eventShow&id=4"><img src="..//public/IMG/animation.png" class="card-img-top" alt="Animation"></a>
-                        <div class="card-body">
-                            <h5 class="card-title">Animations</h5>
-                            <p class="card-text">Des animations pour occuper petits et grands.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card shadow-sm">
-                        <a class="lien" href="index.php?controller=Programmation&action=eventShow&id=3"><img src="..//public/IMG/spectacle.jpg" class="card-img-top" alt="Spectacles"></a>
-                        <div class="card-body">
-                            <h5 class="card-title">Spectacles</h5>
-                            <p class="card-text">Découvrez des spectacles à couper le souffle!</p>
+                            <h5 class="card-title">Catégories</h5>
+                            <p class="card-text">Recherchez par catégories.</p>
                         </div>
                     </div>
                 </div>
