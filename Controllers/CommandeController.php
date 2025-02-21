@@ -4,6 +4,7 @@ require_once '../Core/DbConnect.php';
 require_once '../models/CommandeModel.php';
 require_once '../models/UtilisateurModel.php'; // Si besoin
 require_once '../Entities/Utilisateur.php';
+require_once 'controllers/ProduitController.php'; // Ajuste le chemin si nécessaire
 
 class CommandeController
 {
@@ -71,7 +72,6 @@ class CommandeController
         }
     }
 
-    // 2️⃣ Afficher les commandes d'un utilisateur
     public function afficherCommandesUtilisateur()
     {
         if (!isset($_SESSION['id_utilisateur'])) {
@@ -80,8 +80,21 @@ class CommandeController
         }
 
         $id_utilisateur = $_SESSION['id_utilisateur'];
-        return $this->commandeModel->getCommandesByUser($id_utilisateur);
+        $commandes = $this->commandeModel->getCommandesByUser($id_utilisateur);
+
+        $produitController = new ProduitController(); // Instancier le contrôleur des produits
+
+        foreach ($commandes as &$commande) {
+
+            if (!empty($commande->id_produit)) { // ✅ Accès en tant qu'objet
+                $produitInfo = $produitController->getProductById($commande->id_produit);
+                $commande->nom_produit = $produitInfo ? $produitInfo['nom'] : "Produit inconnu"; // ✅ Ajout de la propriété à l'objet
+            }
+        }
+
+        return $commandes;
     }
+
 
     // 3️⃣ Modifier le statut d'une commande (Admin)
     public function modifierStatut()

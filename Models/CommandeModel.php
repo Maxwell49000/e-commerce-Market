@@ -32,10 +32,18 @@ class CommandeModel extends DbConnect
     // 4️⃣ Récupérer les commandes d'un utilisateur
     public function getCommandesByUser($id_utilisateur)
     {
-        $stmt = $this->connection->prepare("SELECT * FROM commande WHERE id_utilisateur = ? ORDER BY date_commande DESC");
+        $stmt = $this->connection->prepare("
+            SELECT c.id_commande, c.date_commande, c.total, c.statut_commande,
+                   d.id_detail_commande, d.id_produit, d.quantite, d.prix_unitaire
+            FROM commande c
+            LEFT JOIN detail_commande d ON c.id_commande = d.id_commande
+            WHERE c.id_utilisateur = ?
+            ORDER BY c.date_commande DESC
+        ");
         $stmt->execute([$id_utilisateur]);
         return $stmt->fetchAll();
     }
+
     // 5️⃣ Modifier le statut d'une commande (Admin)
     public function modifierStatutCommande($id_commande, $statut)
     {

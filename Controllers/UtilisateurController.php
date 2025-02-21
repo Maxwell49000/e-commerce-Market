@@ -252,6 +252,8 @@ class UtilisateurController extends Controller
         $commandeModel = new CommandeModel();
         $commandes = $commandeModel->getCommandesByUser($_SESSION['id_utilisateur']);
 
+
+
         $this->render('utilisateur/profil', ['message' => $message, 'utilisateur' => $utilisateur, 'commandes' => $commandes]);
     }
 }

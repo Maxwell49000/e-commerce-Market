@@ -45,4 +45,10 @@ class ProduitController extends Controller
             'avis' => $avis
         ]);
     }
+
+    public function getProductById($id)
+    {
+        $json = file_get_contents($this->apiBaseUrl . $id);
+        return json_decode($json, true);
+    }
 }

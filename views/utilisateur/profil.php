@@ -9,7 +9,9 @@
     </div>
     <?php unset($_SESSION['message']); // Efface le message après affichage 
     ?>
-<?php endif; ?>
+<?php endif;
+
+?>
 
 <div class="container mt-4">
     <div class="row">
@@ -40,8 +42,11 @@
                             <table class="table table-striped table-hover">
                                 <thead class="table-dark">
                                     <tr>
-                                        <th>ID</th>
+                                        <th>Id_commande</th>
                                         <th>Date</th>
+                                        <th>Id_produit</th>
+                                        <th>Quantité</th>
+                                        <th>Prix unitaire</th>
                                         <th>Total</th>
                                         <th>Statut</th>
                                     </tr>
@@ -49,8 +54,13 @@
                                 <tbody>
                                     <?php foreach ($commandes as $commande): ?>
                                         <tr>
+
                                             <td><?= $commande->id_commande ?></td>
                                             <td><?= date('d/m/Y H:i', strtotime($commande->date_commande)) ?></td>
+                                            <td><?= $commande->id_produit ?></td>
+
+                                            <td><?= $commande->quantite ?></td>
+                                            <td><?= $commande->prix_unitaire ?></td>
                                             <td><?= number_format($commande->total, 2, ',', ' ') ?> €</td>
                                             <td>
                                                 <?php
