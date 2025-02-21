@@ -56,7 +56,7 @@ class UtilisateurModel extends DbConnect
 
 
         // Requête pour inserer dans la BDD les valeurs précedement getté:
-        $this->request = 'INSERT INTO utilisateurs VALUES (NULL, "' . $nom . '","' . $password . '", "' . $email . '", "' . 0 . '")';
+        $this->request = 'INSERT INTO utilisateurs VALUES (NULL, "' . $nom . '","' . $email . '", "' . $password . '", "' . 0 . '")';
 
         $success = $this->connection->exec($this->request);
 
