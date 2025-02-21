@@ -25,23 +25,13 @@ class UtilisateurModel extends DbConnect
         return $programmation;
     }
 
+    public function getUtilisateurById($id)
+    {
+        $stmt = $this->connection->prepare("SELECT id_utilisateur, nom, email FROM utilisateurs WHERE id_utilisateur = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
-    // public function delete($utilisateur)
-    // {
-    //     // Création d'une variable $id  pour getter l'id (la faire transiter):
-    //     $id = $utilisateur->getId_utilisateur();
-
-    //     // Suppression des avis liés avant de supprimer l'utilisateur
-    //     $this->request = "DELETE FROM avis WHERE id_utilisateur = :id";
-    //     $stmt = $this->connection->prepare($this->request);
-    //     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-    //     $stmt->execute();
-
-    //     // Requête supprimant tous les champs de la table utilisateur ou l'id = l'id:
-    //     $this->request = "DELETE FROM utilisateurs WHERE id_utilisateur =  $id";
-
-    //     return $this->connection->exec($this->request);
-    // }
 
 
     public function create($utilisateur)

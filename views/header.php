@@ -65,7 +65,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         <li class="nav-item"><a class="nav-link" href="index.php">Accueil</a></li>
                         <li class="nav-item"><a class="nav-link" href="index.php?controller=Produit&action=getProducts">Produits</a></li>
                         <li class="nav-item"><a class="nav-link" href="index.php?controller=Categorie&action=getCategory">Catégories</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.php?controller=Utilisateur&action=profil">Profil</a></li>
                         <li class="nav-item"><a class="nav-link" href="index.php?controller=Panier&action=panierView" class="nav-link position-relative">
                                 <i class="fas fa-shopping-cart"></i>
                                 <?php if (!empty($_SESSION['panier'])): ?>

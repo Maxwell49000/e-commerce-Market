@@ -5,6 +5,8 @@
 require 'Controller.php';
 require_once '../Models/UtilisateurModel.php';
 require_once '../Entities/Utilisateur.php';
+require_once '../Models/CommandeModel.php';
+require_once '../Entities/Commande.php';
 
 class UtilisateurController extends Controller
 {
@@ -48,7 +50,7 @@ class UtilisateurController extends Controller
                             $_SESSION['id_utilisateur'] = $user->getId_utilisateur();
                             $_SESSION['statut'] = $user->getStatut();
 
-                            header("Location: index.php?controller=Home&action=homeAction");
+                            header("Location: index.php?controller=Utilisateur&action=profil");
                             exit;
                         } else {
                             $_SESSION['error'] = "Mot de passe incorrect.";
@@ -101,20 +103,20 @@ class UtilisateurController extends Controller
     }
 
 
-    // Fonction pour afficher la requête d'affichage:
-    public function displayUtilisateurAction()
-    {
-        // Instanciation de la class UtilisateurModel pour appeler une de ses méthode juste après:
-        $utilisateurModel = new UtilisateurModel();
+    // // Fonction pour afficher la requête d'affichage:
+    // public function displayUtilisateurAction()
+    // {
+    //     // Instanciation de la class UtilisateurModel pour appeler une de ses méthode juste après:
+    //     $utilisateurModel = new UtilisateurModel();
 
-        // Création d'un objet "$utilisateurs" pour y stocker le resultat de la requete que l'on appel (findAll):
-        $utilisateurs = $utilisateurModel->findAll();
+    //     // Création d'un objet "$utilisateurs" pour y stocker le resultat de la requete que l'on appel (findAll):
+    //     $utilisateurs = $utilisateurModel->findAll();
 
-        $message = isset($_GET['message']) ? $_GET['message'] : "";
+    //     $message = isset($_GET['message']) ? $_GET['message'] : "";
 
-        // Envoi la vue dans le dossier admin puis dans le fichier displayUtilisateurAction:
-        $this->render('admin/displayUtilisateurAction', ['utilisateurs' => $utilisateurs, 'message' => $message]);
-    }
+    //     // Envoi la vue dans le dossier admin puis dans le fichier displayUtilisateurAction:
+    //     $this->render('admin/displayUtilisateurAction', ['utilisateurs' => $utilisateurs, 'message' => $message]);
+    // }
 
 
 
@@ -229,5 +231,27 @@ class UtilisateurController extends Controller
             $message = "Tous les champs sont requis.";
             $this->render('connection/inscription', ['message' => $message]);
         }
+    }
+
+    public function profil()
+    {
+
+        if (!isset($_SESSION['id_utilisateur'])) {
+            header('Location: index.php?controller=Utilisateur&action=formConnect');
+            exit;
+        }
+
+        // Récupérer les infos de l'utilisateur connecté
+        $utilisateurModel = new UtilisateurModel();
+        $utilisateur = $utilisateurModel->getUtilisateurById($_SESSION['id_utilisateur']);
+
+        // Message de retour
+        $message = $utilisateur ? "Connexion effectuée, bienvenue sur votre profil! :)" : "Connexion non effectuée.";
+
+        // Récupérer les commandes de l'utilisateur
+        $commandeModel = new CommandeModel();
+        $commandes = $commandeModel->getCommandesByUser($_SESSION['id_utilisateur']);
+
+        $this->render('utilisateur/profil', ['message' => $message, 'utilisateur' => $utilisateur, 'commandes' => $commandes]);
     }
 }

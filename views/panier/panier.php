@@ -1,3 +1,12 @@
+<?php if (!empty($_SESSION['message'])): ?>
+    <div class="alert alert-info" role="alert">
+        <?php echo $_SESSION['message']; ?>
+    </div>
+    <?php unset($_SESSION['message']); // Efface le message après affichage 
+    ?>
+<?php endif; ?>
+
+
 <div class="container py-5">
     <!-- Titre -->
     <h1 class="pagesTitle text-center mb-5 text-uppercase fw-bold">Votre panier</h1>
@@ -90,7 +99,7 @@
                             <a href="index.php?controller=Panier&action=viderPanier" class="btn btn-danger me-2">
                                 <i class="fas fa-trash-alt"></i> Vider le panier
                             </a>
-                            <a href="index.php?controller=Panier&action=validerCommande" class="btn btn-success">
+                            <a href="index.php?controller=Commande&action=validerCommande" class="btn btn-success">
                                 <i class="fas fa-check"></i> Valider la commande
                             </a>
                         </div>
