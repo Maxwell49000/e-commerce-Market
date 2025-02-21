@@ -4,6 +4,9 @@ require_once 'Controller.php';
 
 require_once '../Models/PanierModel.php';
 
+if (!isset($_SESSION['panier'])) {
+    $_SESSION['panier'] = []; // Le panier est un tableau associatif [id_produit => quantité]
+}
 
 
 class PanierController extends Controller
@@ -27,119 +30,111 @@ class PanierController extends Controller
         $this->render('panier/panier');
     }
 
-    // Ajouter un article au panier en fonction de l'ID et de la quantité fournis via les paramètres GET ($_GET):
     public function ajouterArticle()
     {
-        // L'ID et la quantité sont vérifiés pour s'assurer qu'ils existent dans les paramètres GET et les valeurs sont converties en entiers pour éviter les failles:
-        if (isset($_GET['id']) && isset($_GET['quantite'])) {
-            $id = (int)$_GET['id']; // Convertir l'id en entier pour éviter les failles.
-            $quantite = (int)$_GET['quantite']; // Convertir la quantité en entier.
-
-            // La quantité est aussi vérifiée pour être supérieure à zéro:
-            if ($quantite > 0) {
-                $this->panier->ajouter($id, $quantite);
-                // Redirection vers la vue du panier après l'ajout
+        if (isset($_GET['id'])) {
+            $id = $_GET['id'];
+            // Supposons que vous ayez une méthode pour récupérer les détails du produit via l'API
+            $produit = $this->getProduitFromAPI($id);
+            if ($produit) {
+                $this->panier->ajouterArticle($produit);
                 header('Location: index.php?controller=Panier&action=panierView');
                 exit;
-            } else {
-                echo "Quantité invalide.";
             }
-        } else {
-            echo "ID ou quantité manquant.";
         }
+        // Gérer l'erreur
+        header('Location: index.php?controller=Produit&action=getProducts');
     }
 
-    // Supprimer un article du panier à l'aide de l'ID passé via les paramètres GET ($_GET):
-    public function supprimerArticle()
+    public function retirerArticle()
     {
-        // Récupérer l'ID via $_GET
-        $id = $_GET['id'] ?? null;
-
-
-        // Si un ID valide est fourni, la méthode supprimer du modèle PanierModel est appelée pour supprimer l'article du panier:
-        if (!isset($id) || empty($id)) {
-            // Si aucun ID n'est fourni, redirigez vers le panier
-            header('Location: index.php?controller=Panier&action=panierView');
-            exit;
+        if (isset($_GET['id'])) {
+            $this->panier->retirerArticle($_GET['id']);
         }
+        header('Location: index.php?controller=Panier&action=panierView');
+    }
 
-        $PanierModel = new PanierModel();
-        $avis = $PanierModel->supprimer($id);
-
-
-        // Redirection vers la vue panier
+    public function viderPanier()
+    {
+        $this->panier->vider();
         header('Location: index.php?controller=Panier&action=panierView');
         exit;
     }
 
-    // Vider le panier de l'utilisateur, c'est-à-dire supprimer tous les articles du panier:
-    public function deletePanier()
-    {
-
-        // La méthode supprimerPanier du modèle PanierModel est utilisée pour vider le panier:
-        $PanierModel = new PanierModel();
-        $panier = $PanierModel->supprimerPanier();
-        // Redirection vers la vue panier
-        header('Location: index.php?controller=Panier&action=panierView');
-        exit;
-    }
-
-    // Modifier la quantité d'un article dans le panier en fonction des données reçues:
     public function modifierQuantite()
     {
-        // La méthode modifier du modèle PanierModel est appelée pour mettre à jour la quantité d'un article spécifique dans le panier:
-        $PanierModel = new PanierModel();
-        $panier = $PanierModel->modifier();
-        // Redirection vers la vue panier
+        if (isset($_POST['index']) && isset($_POST['quantite'])) {
+            $index = $_POST['index'];
+            $quantite = intval($_POST['quantite']);
+
+            // Vérification que l'article existe dans le panier
+            if (isset($_SESSION['panier'][$index])) {
+                // Vérification que la quantité est positive
+                if ($quantite > 0) {
+                    $_SESSION['panier'][$index]['quantite'] = $quantite;
+                } else {
+                    // Si quantité invalide, on met 1 par défaut
+                    $_SESSION['panier'][$index]['quantite'] = 1;
+                }
+            }
+        }
+
+        // Redirection vers le panier
         header('Location: index.php?controller=Panier&action=panierView');
         exit;
     }
 
-    public function validerCommande()
+    public function afficher()
     {
-        if (!isset($_SESSION['id_utilisateur'])) {
-            header('Location: index.php?controller=Utilisateur&action=formConnect');
-            exit;
-        }
+        $contenu = $this->panier->getContenu();
+        $total = $this->panier->getTotal();
+        // Charger la vue
+        require_once 'Views/panier.php';
+    }
 
-        $reservationModel = new ReservationModel();
-
-
-        $cartItems = $this->panier->getPanier(); // Récupérer le panier
-
+    private function getProduitFromAPI($id)
+    {
+        // Remplacez l'URL par l'URL réelle de votre API Node.js
+        $apiUrl = "http://localhost:3000/produit/" . $id;  // Ajustez le port si nécessaire
 
         try {
-            $reservationModel->startTransaction();
+            // Initialisation de cURL
+            $ch = curl_init();
 
+            // Configuration de la requête
+            curl_setopt_array($ch, [
+                CURLOPT_URL => $apiUrl,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_FAILONERROR => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => ["Content-Type: application/json"]
+            ]);
 
+            // Exécution de la requête
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-            foreach ($cartItems as $item) {
-
-                $id_programmation = $item['id_programmation'];
-                $quantite = $item['quantite'];
-                $id_utilisateur = $_SESSION['id_utilisateur'];
-
-
-                if (!$programmationModel->checkAvailability($id_programmation, $quantite)) {
-                    throw new Exception("Pas assez de places pour l'événement ID : $id_programmation");
-                }
-
-                // $programmationModel->updatePlaces($id_programmation, $quantite);
-                $reservationModel->addReservation($id_programmation, $id_utilisateur, $quantite);
+            if ($httpCode === 200) {
+                $produit = json_decode($response, true);
+                return $produit; // Votre API renvoie déjà le bon format de données
             }
 
-            $reservationModel->commitTransaction();
-            $this->panier->supprimerPanier();
-
-            header('Location: index.php?controller=Panier&action=confirmation');
-            exit;
+            // Gestion des erreurs
+            if ($httpCode === 404) {
+                // Produit non trouvé
+                return null;
+            }
         } catch (Exception $e) {
-            $reservationModel->rollbackTransaction();
-            die("Erreur lors de la commande : " . $e->getMessage());
+            // Log de l'erreur
+            error_log("Erreur lors de la récupération du produit : " . $e->getMessage());
+            return null;
+        } finally {
+            if ($ch) {
+                curl_close($ch);
+            }
         }
-    }
-    public function confirmation()
-    {
-        $this->render('panier/confirmation');
+
+        return null;
     }
 }

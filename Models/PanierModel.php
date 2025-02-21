@@ -3,85 +3,79 @@
 require_once '../Core/DbConnect.php';
 
 
-
-
-
-class PanierModel extends DbConnect
+class PanierModel
 {
-    private $programmationModel;
+    private $items = [];
 
     public function __construct()
     {
-        parent::__construct();
-
-
-
+        // Initialiser le panier depuis la session
         if (!isset($_SESSION['panier'])) {
             $_SESSION['panier'] = [];
         }
+        $this->items = $_SESSION['panier'];
     }
 
-    public function getArticleDetails($id)
+    public function ajouterArticle($produit, $quantite = 1)
     {
-        // Utiliser ProgrammationModel pour récupérer les détails
-        return $this->programmationModel->getProgrammationById($id);
-    }
-
-    public function ajouter($id, $quantite)
-    {
-        if (empty($id)) {
-            throw new Exception("ID de l'article vide ou invalide.");
-        }
-
-        // Récupérer les détails de l'article
-        $details = $this->getArticleDetails($id);
-
-        if (!$details) {
-            throw new Exception("Impossible de trouver l'article avec l'ID $id.");
-        }
-
-        // Ajouter ou mettre à jour l'article dans le panier
-        if (isset($_SESSION['panier'][$id])) {
-            $_SESSION['panier'][$id]['quantite'] += $quantite;
+        $id = $produit['id_produit'];
+        if (isset($this->items[$id])) {
+            $this->items[$id]['quantite'] += $quantite;
         } else {
-            $_SESSION['panier'][$id] = [
-                'id_programmation' => $id, // Enregistrer l'ID de la programmation
+            $this->items[$id] = [
+                'id' => $id,
+                'nom' => $produit['nom_produit'],
+                'prix' => $produit['prix'],
                 'quantite' => $quantite,
-                'nom' => $details->nom,
-                'description' => $details->description,
-                'prix' => $details->prix,
+                'image' => $produit['image'],
+                'description' => $produit['description']
             ];
         }
+        $this->sauvegarder();
     }
 
-    public function supprimer($id)
+    public function retirerArticle($id)
     {
-        if (isset($_SESSION['panier'][$id])) {
-            unset($_SESSION['panier'][$id]);
+        if (isset($this->items[$id])) {
+            unset($this->items[$id]);
+            $this->sauvegarder();
         }
     }
 
-    public function supprimerPanier()
+    public function modifierQuantite($id, $quantite)
     {
-        if (isset($_SESSION['panier'])) {
-            unset($_SESSION['panier']);
+        if (isset($this->items[$id])) {
+            if ($quantite <= 0) {
+                $this->retirerArticle($id);
+            } else {
+                $this->items[$id]['quantite'] = $quantite;
+                $this->sauvegarder();
+            }
         }
     }
 
-    public function modifier()
+    public function getContenu()
     {
-        // Récupération des données du formulaire
-        $index = $_POST['index'];
-        $quantite = (int)$_POST['quantite'];
-
-
-        if (isset($_SESSION['panier'][$index])) {
-            $_SESSION['panier'][$index]['quantite'] = $quantite;
-        }
+        return $this->items;
     }
 
-    public function getPanier()
+    public function getTotal()
     {
-        return isset($_SESSION['panier']) ? $_SESSION['panier'] : [];
+        $total = 0;
+        foreach ($this->items as $item) {
+            $total += $item['prix'] * $item['quantite'];
+        }
+        return $total;
+    }
+
+    public function vider()
+    {
+        $this->items = [];
+        $this->sauvegarder();
+    }
+
+    private function sauvegarder()
+    {
+        $_SESSION['panier'] = $this->items;
     }
 }

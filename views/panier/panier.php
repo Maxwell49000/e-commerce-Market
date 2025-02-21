@@ -44,7 +44,7 @@
                                             </td>
                                             <td class="text-center"><?php echo $article['prix'] * $article['quantite']; ?> €</td>
                                             <td class="text-center">
-                                                <a href="index.php?controller=Panier&action=supprimerArticle&id=<?php echo $index; ?>" class="btn btn-outline-danger btn-sm">
+                                                <a href="index.php?controller=Panier&action=retirerArticle&id=<?php echo $index; ?>" class="btn btn-outline-danger btn-sm">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </td>
@@ -74,7 +74,7 @@
                                         </form>
                                         </p>
                                         <p class="card-text"><strong>Total :</strong> <?php echo $article['prix'] * $article['quantite']; ?> €</p>
-                                        <a href="index.php?controller=Panier&action=supprimerArticle&id=<?php echo $index; ?>" class="btn btn-outline-danger btn-sm">
+                                        <a href="index.php?controller=Panier&action=retirerArticle&id=<?php echo $index; ?>" class="btn btn-outline-danger btn-sm">
                                             <i class="fas fa-trash"></i> Supprimer
                                         </a>
                                     </div>
@@ -87,7 +87,7 @@
                     <div class="card-footer bg-light d-flex justify-content-between align-items-center">
                         <span class="fw-bold fs-5">Total du panier : <?php echo $total; ?> €</span>
                         <div>
-                            <a href="index.php?controller=Panier&action=deletePanier" class="btn btn-danger me-2">
+                            <a href="index.php?controller=Panier&action=viderPanier" class="btn btn-danger me-2">
                                 <i class="fas fa-trash-alt"></i> Vider le panier
                             </a>
                             <a href="index.php?controller=Panier&action=validerCommande" class="btn btn-success">

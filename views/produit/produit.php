@@ -12,7 +12,10 @@
         </div>
         <a href="index.php?controller=Produit&action=getProducts" class="btn-back">Retour à la liste des produits</a>
         <a href="index.php?controller=Avis&action=formAvis&id=<?= htmlspecialchars($produit['id_produit']) ?>" class="btn-back">Ajouter un avis</a>
+        <a href="index.php?controller=Panier&action=ajouterArticle&id=<?= htmlspecialchars($produit['id_produit']) ?>" class="btn-back">Ajouter au panier</a>
     </div>
+
+
 </div>
 
 <!-- Section des avis -->
