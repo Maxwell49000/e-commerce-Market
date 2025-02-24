@@ -12,6 +12,9 @@
 
 <script src="script.js"></script>
 <script src="darkMode.js"></script>
+<!-- Swiper.js JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
 
 
 </body>

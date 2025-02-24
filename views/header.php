@@ -15,6 +15,9 @@ if (session_status() === PHP_SESSION_NONE) {
     <script src="https://kit.fontawesome.com/421fcfdcfb.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Swiper.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
     <link
         href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
@@ -62,6 +65,13 @@ if (session_status() === PHP_SESSION_NONE) {
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
+                        <div class="navbar-search">
+                            <form id="search-form" action="#" method="get">
+                                <input type="text" id="search-input" name="search" placeholder="Rechercher des produits..." class="search-input">
+                                <button type="submit" class="search-button">🔍</button>
+                            </form>
+                        </div>
+
                         <li class="nav-item"><a class="nav-link" href="index.php">Accueil</a></li>
                         <li class="nav-item"><a class="nav-link" href="index.php?controller=Produit&action=getProducts">Produits</a></li>
                         <li class="nav-item"><a class="nav-link" href="index.php?controller=Categorie&action=getCategory">Catégories</a></li>
@@ -90,4 +100,6 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
 
         </nav>
+
         <main>
+            <div id="search-results"></div>

@@ -20,7 +20,7 @@ class CategorieController extends Controller
         // Assure-toi que l'URL est correctement formatée sans doublon
         $url = $this->apiBaseUrl . $id . "/produits";  // Retire le "categorie" redondant
 
-        echo "URL générée: " . $url; // Pour vérifier l'URL générée
+
 
         $json = file_get_contents($url);
         $produits = json_decode($json, true);

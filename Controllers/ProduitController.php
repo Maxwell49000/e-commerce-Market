@@ -25,6 +25,16 @@ class ProduitController extends Controller
         $this->render('produit/displayProduitAction', ['products' => $products]);
     }
 
+    public function home()
+    {
+        $url = $this->apiBaseUrl;
+        $response = file_get_contents($url);
+        $products = json_decode($response, true);
+
+        // Envoyer les produits à la vue d'accueil
+        $this->render('home/homeAction', ['products' => $products]);
+    }
+
     public function show($id)
     {
         // Récupération du produit via l'API

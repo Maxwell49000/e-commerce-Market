@@ -2,20 +2,20 @@
 
 <div class="product-container">
     <div class="product-card">
-        <img src="<?= htmlspecialchars($produit['image']) ?>" alt="<?= htmlspecialchars($produit['nom_produit']) ?>">
+        <img src="<?= htmlspecialchars($produit['image']) ?>" alt="<?= htmlspecialchars($produit['nom_produit']) ?>" class="product-image">
         <div class="product-info">
-            <h2><?= htmlspecialchars($produit['nom_produit']); ?></h2>
+            <h2 class="product-name"><?= htmlspecialchars($produit['nom_produit']); ?></h2>
             <p><strong>Prix :</strong> <?= htmlspecialchars($produit['prix']); ?> €</p>
             <p><strong>Quantité :</strong> <?= htmlspecialchars($produit['quantite']) ?></p>
             <p><strong>Catégorie :</strong> <?= htmlspecialchars($produit['nom_categorie']) ?></p>
             <p class="description"><?= htmlspecialchars($produit['description']) ?></p>
         </div>
-        <a href="index.php?controller=Produit&action=getProducts" class="btn-back">Retour à la liste des produits</a>
-        <a href="index.php?controller=Avis&action=formAvis&id=<?= htmlspecialchars($produit['id_produit']) ?>" class="btn-back">Ajouter un avis</a>
-        <a href="index.php?controller=Panier&action=ajouterArticle&id=<?= htmlspecialchars($produit['id_produit']) ?>" class="btn-back">Ajouter au panier</a>
+        <div class="product-actions">
+            <a href="index.php?controller=Produit&action=getProducts" class="btn btn-secondary">Retour à la liste des produits</a>
+            <a href="index.php?controller=Avis&action=formAvis&id=<?= htmlspecialchars($produit['id_produit']) ?>" class="btn btn-info">Ajouter un avis</a>
+            <a href="index.php?controller=Panier&action=ajouterArticle&id=<?= htmlspecialchars($produit['id_produit']) ?>" class="btn btn-primary">Ajouter au panier</a>
+        </div>
     </div>
-
-
 </div>
 
 <!-- Section des avis -->
@@ -39,5 +39,8 @@
         <?php endforeach; ?>
     </div>
 <?php else: ?>
-    <p>Aucun avis pour ce produit.</p>
+    <div class="no-reviews">
+        <p>Aucun avis pour ce produit.</p>
+        <p class="no-reviews-note">Soyez le premier à laisser un avis !</p>
+    </div>
 <?php endif; ?>

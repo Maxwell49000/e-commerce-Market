@@ -60,3 +60,84 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+
+document.getElementById('search-form').addEventListener('submit', async function (event) {
+    event.preventDefault(); // Empêche la soumission classique du formulaire
+
+    const keyword = document.getElementById('search-input').value;
+    console.log('Mot-clé:', keyword); // Log pour vérifier que le mot-clé est récupéré
+
+    if (!keyword.trim()) {
+        console.log('Aucun mot-clé entré');
+        return; // Ne pas envoyer une requête vide
+    }
+
+    try {
+        // Envoi de la requête à l'API
+        const response = await fetch(`http://localhost:3000/produits/recherche?q=${encodeURIComponent(keyword)}`);
+        console.log('Réponse de l\'API:', response); // Vérifiez si la réponse est bien reçue
+
+        if (!response.ok) {
+            throw new Error('Erreur lors de la recherche');
+        }
+
+        const produits = await response.json();
+        console.log('Produits reçus:', produits); // Log pour vérifier les produits reçus
+
+        // Affichage des résultats
+        displayResults(produits);
+
+    } catch (error) {
+        console.error('Erreur lors de la recherche:', error);
+    }
+});
+
+// Fonction pour afficher les résultats de recherche
+function displayResults(produits) {
+    const resultsContainer = document.getElementById('search-results');
+    resultsContainer.innerHTML = ''; // Efface les anciens résultats
+
+    if (produits.length === 0) {
+        resultsContainer.innerHTML = '<p>Aucun produit trouvé.</p>';
+        return;
+    }
+
+    produits.forEach(produit => {
+        const productElement = document.createElement('div');
+        productElement.classList.add('product-card');
+        productElement.innerHTML = `
+            <img src="${produit.image}" alt="${produit.nom_produit}" class="product-image">
+            <h3>${produit.nom_produit}</h3>
+            <p>Prix: ${produit.prix} €</p>
+            <p>${produit.description}</p>
+            <a href="index.php?controller=Produit&action=show&id=${produit.id_produit}" class="btn btn-outline-light btn-lg">Voir plus</a>
+        `;
+        resultsContainer.appendChild(productElement);
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    var swiper = new Swiper(".mySwiper", {
+        slidesPerView: 3, /* Nombre d'éléments visibles */
+        spaceBetween: 20, /* Espace entre les éléments */
+        loop: true, /* Boucle infinie */
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+        breakpoints: {
+            768: {
+                slidesPerView: 2, /* 2 éléments sur tablette */
+            },
+            480: {
+                slidesPerView: 1, /* 1 élément sur mobile */
+            }
+        }
+    });
+});
+
+

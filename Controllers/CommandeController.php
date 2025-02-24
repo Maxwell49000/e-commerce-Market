@@ -51,9 +51,6 @@ class CommandeController
             // 2️⃣ Ajouter les produits à la commande
             foreach ($_SESSION['panier'] as $id_produit => $details) {
                 $this->commandeModel->ajouterDetailsCommande($id_commande, $id_produit, $details['quantite'], $details['prix']);
-
-                // // 3️⃣ Mettre à jour les stocks
-                // $this->commandeModel->mettreAJourStock($id_produit, $details['quantite']);
             }
 
             $pdo->commit();
