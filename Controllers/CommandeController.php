@@ -1,14 +1,16 @@
 <?php
-require 'Controller.php';
+require_once 'Controller.php';
 require_once '../Core/DbConnect.php';
 require_once '../models/CommandeModel.php';
-require_once '../models/UtilisateurModel.php'; // Si besoin
+require_once '../models/UtilisateurModel.php';
 require_once '../Entities/Utilisateur.php';
-require_once 'controllers/ProduitController.php'; // Ajuste le chemin si nécessaire
+
+
 
 class CommandeController
 {
     private $commandeModel;
+    private $apiBaseUrl = "http://localhost:3000/produit/";
 
     public function __construct()
     {
@@ -72,8 +74,10 @@ class CommandeController
         }
     }
 
+
     public function afficherCommandesUtilisateur()
     {
+
         if (!isset($_SESSION['id_utilisateur'])) {
             header("Location: login.php");
             exit;
@@ -82,18 +86,35 @@ class CommandeController
         $id_utilisateur = $_SESSION['id_utilisateur'];
         $commandes = $this->commandeModel->getCommandesByUser($id_utilisateur);
 
-        $produitController = new ProduitController(); // Instancier le contrôleur des produits
+        // Instancier le contrôleur des produits (en utilisant ton code d'API)
+        $produitController = new ProduitController();
 
+        // Pour chaque commande, récupérer les informations sur le produit via l'API
         foreach ($commandes as &$commande) {
 
-            if (!empty($commande->id_produit)) { // ✅ Accès en tant qu'objet
-                $produitInfo = $produitController->getProductById($commande->id_produit);
-                $commande->nom_produit = $produitInfo ? $produitInfo['nom'] : "Produit inconnu"; // ✅ Ajout de la propriété à l'objet
+
+            if (!empty($commande->id_produit)) {
+                // Appel à l'API pour récupérer les informations du produit
+                $produitInfo = $produitController->getProduitFromAPI($commande->id_produit);
+
+
+                if ($produitInfo) {
+                    // Ajoute les informations du produit à la commande
+                    $commande->nom_produit = isset($produitInfo['nom_produit']) ? $produitInfo['nom_produit'] : 'Produit inconnu';
+                    $commande->prix_produit = isset($produitInfo['prix']) ? $produitInfo['prix'] : 'Prix non disponible';
+                } else {
+                    // Si l'API ne retourne rien, met les valeurs par défaut
+                    $commande->nom_produit = "Produit inconnu";
+                    $commande->prix_produit = "Prix non disponible";
+                }
             }
         }
 
+
         return $commandes;
     }
+
+
 
 
     // 3️⃣ Modifier le statut d'une commande (Admin)

@@ -1,6 +1,6 @@
 <?php
 
-require 'Controller.php';
+require_once 'Controller.php';
 require_once '../Models/AvisModel.php';
 require_once '../Entities/Avis.php';
 

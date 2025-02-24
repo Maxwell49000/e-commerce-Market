@@ -1,12 +1,14 @@
 <?php
 
 
+require_once __DIR__ . '/ProduitController.php';
 
-require 'Controller.php';
+require_once 'Controller.php';
 require_once '../Models/UtilisateurModel.php';
 require_once '../Entities/Utilisateur.php';
 require_once '../Models/CommandeModel.php';
 require_once '../Entities/Commande.php';
+
 
 class UtilisateurController extends Controller
 {
@@ -235,7 +237,6 @@ class UtilisateurController extends Controller
 
     public function profil()
     {
-
         if (!isset($_SESSION['id_utilisateur'])) {
             header('Location: index.php?controller=Utilisateur&action=formConnect');
             exit;
@@ -252,8 +253,29 @@ class UtilisateurController extends Controller
         $commandeModel = new CommandeModel();
         $commandes = $commandeModel->getCommandesByUser($_SESSION['id_utilisateur']);
 
+        // Créer une instance du contrôleur des produits
+        $produitController = new ProduitController();
 
+        // Pour chaque commande, récupérer les informations du produit via l'API
+        foreach ($commandes as $commande) {
+            if (!empty($commande->id_produit)) {
+                // Appel à l'API pour récupérer les informations du produit
+                $produitInfo = $produitController->getProduitFromAPI($commande->id_produit);
 
-        $this->render('utilisateur/profil', ['message' => $message, 'utilisateur' => $utilisateur, 'commandes' => $commandes]);
+                if ($produitInfo) {
+                    // Ajouter les informations du produit à l'objet commande
+                    $commande->nom_produit = isset($produitInfo['nom_produit']) ? $produitInfo['nom_produit'] : 'Produit inconnu';
+                    $commande->image = isset($produitInfo['image']) ? $produitInfo['image'] : 'Produit inconnu';
+                } else {
+                    $commande->nom_produit = "Produit inconnu";
+                }
+            }
+        }
+
+        $this->render('utilisateur/profil', [
+            'message' => $message,
+            'utilisateur' => $utilisateur,
+            'commandes' => $commandes
+        ]);
     }
 }

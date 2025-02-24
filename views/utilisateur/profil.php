@@ -11,6 +11,7 @@
     ?>
 <?php endif;
 
+
 ?>
 
 <div class="container mt-4">
@@ -44,7 +45,8 @@
                                     <tr>
                                         <th>Id_commande</th>
                                         <th>Date</th>
-                                        <th>Id_produit</th>
+                                        <th>Nom du produit</th>
+                                        <th>Image</th>
                                         <th>Quantité</th>
                                         <th>Prix unitaire</th>
                                         <th>Total</th>
@@ -54,11 +56,10 @@
                                 <tbody>
                                     <?php foreach ($commandes as $commande): ?>
                                         <tr>
-
-                                            <td><?= $commande->id_commande ?></td>
+                                            <td><?= $commande->id_commande  ?></td>
                                             <td><?= date('d/m/Y H:i', strtotime($commande->date_commande)) ?></td>
-                                            <td><?= $commande->id_produit ?></td>
-
+                                            <td><?= htmlspecialchars($commande->nom_produit ?? 'Produit inconnu') ?></td>
+                                            <td><img src="<?= htmlspecialchars($commande->image) ?>" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;"></td>
                                             <td><?= $commande->quantite ?></td>
                                             <td><?= $commande->prix_unitaire ?></td>
                                             <td><?= number_format($commande->total, 2, ',', ' ') ?> €</td>
@@ -71,13 +72,14 @@
                                                     'Livrée' => 'success',
                                                     'Annulée' => 'danger'
                                                 ];
-                                                $badgeClass = isset($statuts[$commande->statut_commande]) ? $statuts[$commande->statut_commande] : 'secondary';
+                                                $badgeClass = $statuts[$commande->statut_commande] ?? 'secondary';
                                                 ?>
                                                 <span class="badge bg-<?= $badgeClass; ?>">
                                                     <?= $commande->statut_commande; ?>
                                                 </span>
                                             </td>
                                         </tr>
+
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
