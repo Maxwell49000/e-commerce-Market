@@ -49,6 +49,7 @@ class ProduitController extends Controller
         // Récupérer les avis pour ce produit
         $avis = $this->avisModel->getAvisByProduit($id); // Utilise l'instance de AvisModel
 
+
         // Charger la vue avec les données du produit et des avis
         $this->render("produit/produit", [
             'produit' => $produit,

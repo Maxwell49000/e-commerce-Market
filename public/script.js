@@ -96,6 +96,8 @@ document.getElementById('search-form').addEventListener('submit', async function
 function displayResults(produits) {
     const resultsContainer = document.getElementById('search-results');
     resultsContainer.innerHTML = ''; // Efface les anciens résultats
+    resultsContainer.style.visibility = 'visible';
+    resultsContainer.style.opacity = '1';
 
     if (produits.length === 0) {
         resultsContainer.innerHTML = '<p>Aucun produit trouvé.</p>';
@@ -141,3 +143,95 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+
+document.addEventListener("DOMContentLoaded", function () {
+    const title = "Bienvenue chez CEFii Market!";
+    let i = 0;
+    let h1 = document.getElementById("animated-title");
+
+    function typeEffect() {
+        if (i < title.length) {
+            h1.textContent += title.charAt(i);
+            i++;
+            setTimeout(typeEffect, 100); // Vitesse d'affichage des lettres
+        }
+    }
+
+    typeEffect();
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const elements = document.querySelectorAll('.hidden');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+                observer.unobserve(entry.target); // Arrête l'observation après affichage
+            }
+        });
+    }, { threshold: 0.2 });
+
+    elements.forEach(el => observer.observe(el));
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const products = document.querySelectorAll('.product-card');
+
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+                observer.unobserve(entry.target); // Une fois visible, on arrête d'observer
+            }
+        });
+    }, { threshold: 0.2 });
+
+    products.forEach(product => observer.observe(product));
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Récupérer le formulaire d'avis
+    const reviewForm = document.getElementById("reviewForm");
+
+    if (reviewForm) {
+        // Ajouter l'écouteur d'événement pour la soumission
+        reviewForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            // Créer l'objet FormData à partir du formulaire
+            const formData = new FormData(reviewForm);
+
+            // Envoyer la requête AJAX
+            fetch('index.php?controller=Avis&action=ajouterAvis', {
+                method: 'POST',
+                body: formData
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    if (data.success) {
+                        // Afficher un message de succès
+                        alert("Avis ajouté avec succès !");
+
+                        // Fermer la modale (en utilisant Bootstrap)
+                        var myModal = bootstrap.Modal.getInstance(document.getElementById('addReviewModal'));
+                        myModal.hide();
+
+                        // Recharger la page pour voir le nouvel avis
+                        location.reload();
+                    } else {
+                        // Afficher un message d'erreur
+                        alert("Erreur : " + (data.error || "Une erreur est survenue"));
+                    }
+                })
+                .catch(function (error) {
+                    console.error("Erreur:", error);
+                    alert("Erreur de connexion au serveur");
+                });
+        });
+    }
+});

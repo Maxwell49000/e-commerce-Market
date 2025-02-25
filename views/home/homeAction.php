@@ -1,12 +1,12 @@
 <div class="container">
     <!-- Hero Section -->
-    <header>
-        <h1>Bienvenue chez CEFii Market</h1>
-        <a href="#about" class="btn">En savoir plus</a>
+    <header class="hidden">
+        <h1 id="animated-title"></h1>
+
     </header>
 
     <!-- Carrousel Produits -->
-    <div class="swiper mySwiper">
+    <div class="swiper mySwiper hidden">
         <div class="swiper-wrapper">
             <?php foreach ($products as $product): ?>
                 <div class="swiper-slide">
@@ -30,8 +30,8 @@
     </div>
 
     <!-- Section Explore -->
-    <section id="program">
-        <h2>Explorez</h2>
+    <section id="program" class="hidden">
+        <h2 class="explore">Explorez</h2>
         <div class="row">
             <div class="col-md-6">
                 <div class="card">
@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="card">
+                <div class="card hidden">
                     <a href="index.php?controller=Categorie&action=getCategory">
                         <img src="../public/IMG/categorie.png" class="card-img-top" alt="Catégories">
                     </a>

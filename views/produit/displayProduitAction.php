@@ -1,7 +1,7 @@
 <div class="main-content">
     <div class="product-container">
         <?php foreach ($products as $product): ?>
-            <div class="product-card">
+            <div class="product-card hidden">
                 <img src="<?= htmlspecialchars($product['image']) ?>" alt="<?= htmlspecialchars($product['nom_produit']) ?>">
                 <div class="product-info">
                     <h2><?= htmlspecialchars($product['nom_produit']); ?></h2>

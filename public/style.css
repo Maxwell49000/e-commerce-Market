@@ -864,7 +864,12 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    visibility: hidden;
+    /* Cache sans casser le centrage */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 }
+
 
 .product-card {
     display: flex;
@@ -998,13 +1003,7 @@ body {
     padding: 0;
 }
 
-/* Hero Section */
-header {
-    background: #111;
-    color: white;
-    text-align: center;
-    padding: 80px 20px;
-}
+
 
 header h1 {
     font-size: 2.5rem;
@@ -1139,4 +1138,60 @@ h2 {
 
 .cookie-popup button:hover {
     background: #008ecc;
+}
+
+#animated-title {
+    color: #00aaff;
+}
+
+.explore {
+    color: #00aaff;
+}
+
+.btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 18px;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn:hover {
+    background-color: #6610f2;
+    transform: scale(1.1);
+}
+
+.hidden {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-in-out;
+}
+
+.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+.stars-container {
+    display: flex;
+    gap: 5px;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.star {
+    color: #ccc;
+}
+
+.star.selected {
+    color: #ffcc00;
+    /* Couleur dorée des étoiles sélectionnées */
+}
+
+#rating-value {
+    margin-top: 10px;
+    font-weight: bold;
 }

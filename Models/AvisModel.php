@@ -41,4 +41,29 @@ class AvisModel extends DbConnect
         // Exécuter la requête
         $stmt->execute();
     }
+
+    public function ajouterAvis($id_produit, $id_utilisateur, $note, $commentaire)
+    {
+        $sql = "INSERT INTO avis (id_utilisateur, id_produit, note, commentaire) VALUES (:id_utilisateur, :id_produit, :note, :commentaire)";
+        $stmt = $this->connection->prepare($sql);
+
+        try {
+            if ($stmt->execute([
+                "id_utilisateur" => $id_utilisateur,
+                "id_produit" => $id_produit,
+                "note" => $note,
+                "commentaire" => $commentaire
+            ])) {
+                return true;
+            } else {
+                // Si la requête échoue, afficher l'erreur SQL
+                $errorInfo = $stmt->errorInfo();
+                error_log("Erreur SQL : " . implode(", ", $errorInfo));
+                return false;
+            }
+        } catch (PDOException $e) {
+            error_log("Erreur d'exécution de la requête : " . $e->getMessage());
+            return false;
+        }
+    }
 }
