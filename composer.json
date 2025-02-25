@@ -1,0 +1,17 @@
+{
+    "name": "axelp/ce-fii-market",
+    "autoload": {
+        "psr-4": {
+            "Axelp\\CeFiiMarket\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Maxwell",
+            "email": "axel.paillard.12@gmail.com"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^6.9"
+    }
+}

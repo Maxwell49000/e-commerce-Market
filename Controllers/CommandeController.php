@@ -4,8 +4,10 @@ require_once '../Core/DbConnect.php';
 require_once '../models/CommandeModel.php';
 require_once '../models/UtilisateurModel.php';
 require_once '../Entities/Utilisateur.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
-
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class CommandeController
 {
@@ -55,12 +57,23 @@ class CommandeController
 
             $pdo->commit();
 
-            // // 4️⃣ Envoyer un email de confirmation
-            // $this->envoyerEmailConfirmation($id_utilisateur, $id_commande);
+            // 3️⃣ Récupérer l'utilisateur pour envoyer l'e-mail
+            $utilisateurModel = new UtilisateurModel();
+            $utilisateur = $utilisateurModel->getUtilisateurById($id_utilisateur);
+            $email = $utilisateur['email'];
+            $nom = $utilisateur['nom'];
+
+            // 4️⃣ Envoyer un email de confirmation
+            $envoye = $this->envoyerEmailConfirmation($email, $nom, $id_commande);
 
             // 5️⃣ Vider le panier et rediriger
             unset($_SESSION['panier']);
             $_SESSION['message'] = "Votre commande a été validée avec succès !";
+
+            if ($envoye !== true) {
+                $_SESSION['message'] .= " (Mais l'email n'a pas pu être envoyé : $envoye)";
+            }
+
             header("Location: index.php?controller=Utilisateur&action=profil");
             exit;
         } catch (Exception $e) {
@@ -71,60 +84,42 @@ class CommandeController
         }
     }
 
-
-    public function afficherCommandesUtilisateur()
+    // Fonction pour envoyer l'e-mail
+    public function envoyerEmailConfirmation($destinataire, $nomClient, $idCommande)
     {
+        $mail = new PHPMailer(true);
 
-        if (!isset($_SESSION['id_utilisateur'])) {
-            header("Location: login.php");
-            exit;
+        try {
+            // Paramètres du serveur SMTP
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';   // Serveur SMTP Gmail
+            $mail->Port = 587;                // Port de Gmail pour TLS
+            $mail->SMTPAuth = true;           // Authentification requise
+            $mail->Username = 'ton-email@gmail.com';  // Ton adresse email
+            $mail->Password = 'ton-mot-de-passe';    // Ton mot de passe ou un mot de passe d'application
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Sécurisation TLS
+
+            // Test local avec MailHog:
+            // $mail->isSMTP();
+            // $mail->Host = 'localhost';
+            // $mail->Port = 1025; // Port par défaut de MailHog
+            // $mail->SMTPAuth = false; // Pas d'authentification requise en local
+
+            // Destinataire
+            $mail->setFrom('ton-email@gmail.com', 'Nom du site');
+            $mail->addAddress($destinataire, $nomClient);
+
+            // Contenu du mail
+            $mail->isHTML(true);
+            $mail->Subject = 'Confirmation de votre commande';
+            $mail->Body    = "Bonjour <b>$nomClient</b>,<br><br> 
+                              Merci pour votre commande. Votre numéro de commande est <b>$idCommande</b>.<br><br>
+                              À bientôt !";
+
+            $mail->send();
+            return true; // Succès
+        } catch (Exception $e) {
+            return "Erreur lors de l'envoi de l'email : {$mail->ErrorInfo}";
         }
-
-        $id_utilisateur = $_SESSION['id_utilisateur'];
-        $commandes = $this->commandeModel->getCommandesByUser($id_utilisateur);
-
-        // Instancier le contrôleur des produits (en utilisant ton code d'API)
-        $produitController = new ProduitController();
-
-        // Pour chaque commande, récupérer les informations sur le produit via l'API
-        foreach ($commandes as &$commande) {
-
-
-            if (!empty($commande->id_produit)) {
-                // Appel à l'API pour récupérer les informations du produit
-                $produitInfo = $produitController->getProduitFromAPI($commande->id_produit);
-
-
-                if ($produitInfo) {
-                    // Ajoute les informations du produit à la commande
-                    $commande->nom_produit = isset($produitInfo['nom_produit']) ? $produitInfo['nom_produit'] : 'Produit inconnu';
-                    $commande->prix_produit = isset($produitInfo['prix']) ? $produitInfo['prix'] : 'Prix non disponible';
-                } else {
-                    // Si l'API ne retourne rien, met les valeurs par défaut
-                    $commande->nom_produit = "Produit inconnu";
-                    $commande->prix_produit = "Prix non disponible";
-                }
-            }
-        }
-
-
-        return $commandes;
-    }
-
-
-
-
-    // 3️⃣ Modifier le statut d'une commande (Admin)
-    public function modifierStatut()
-    {
-        if (!isset($_POST['id_commande']) || !isset($_POST['statut'])) {
-            $_SESSION['message'] = "Données invalides.";
-            header("Location: admin_commandes.php");
-            exit;
-        }
-
-        $this->commandeModel->modifierStatutCommande($_POST['id_commande'], $_POST['statut']);
-        header("Location: admin_commandes.php");
-        exit;
     }
 }
