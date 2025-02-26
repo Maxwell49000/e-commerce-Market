@@ -9,6 +9,7 @@ require_once '../Entities/Avis.php';
 class AvisController extends Controller
 {
     private $apiBaseUrl = "http://localhost:3000/produit/"; // URL de ton API produits
+    // private $apiBaseUrl = "https://7c77-2001-861-5381-9d20-c3e-967a-bc3b-6dcb.ngrok-free.app"; // URL de ton API produits
     private $avisModel;
 
     public function __construct()

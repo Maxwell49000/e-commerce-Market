@@ -7,6 +7,7 @@ require_once '../Entities/Avis.php';
 class ProduitController extends Controller
 {
     private $apiBaseUrl = "http://localhost:3000/produit/";
+
     private $avisModel; // Déclare une propriété pour le modèle AvisModel
 
     // Le constructeur initialise le modèle AvisModel

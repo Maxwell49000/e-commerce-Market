@@ -247,7 +247,8 @@ class UtilisateurController extends Controller
         $utilisateur = $utilisateurModel->getUtilisateurById($_SESSION['id_utilisateur']);
 
         // Message de retour
-        $message = $utilisateur ? "Connexion effectuée, bienvenue sur votre profil! :)" : "Connexion non effectuée.";
+        $message = $utilisateur ? "Bienvenue sur votre profil " . htmlspecialchars($utilisateur['nom']) . " :)!" : "Connexion non effectuée.";
+
 
         // Récupérer les commandes de l'utilisateur
         $commandeModel = new CommandeModel();

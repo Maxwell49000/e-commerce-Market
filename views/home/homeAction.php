@@ -60,7 +60,7 @@
 
     <!-- Popup Cookies -->
     <div id="cookiePopup" class="cookie-popup">
-        <p>Ce site utilise des cookies pour améliorer votre expérience.</p>
+        <p>Ce site utilise des cookies pour améliorer votre expérience. En acceptant, vous consentez à notre utilisation des cookies.</p>
         <button id="acceptCookies">Accepter</button>
         <button id="rejectCookies">Refuser</button>
     </div>

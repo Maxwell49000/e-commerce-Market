@@ -8,6 +8,7 @@ require_once 'Controller.php';
 class HomeController extends Controller
 {
     private $apiBaseUrl = "http://localhost:3000/produit/";
+    // private $apiBaseUrl = "https://7c77-2001-861-5381-9d20-c3e-967a-bc3b-6dcb.ngrok-free.app";
     // Affiche la vue de l'accueil:
     public function homeAction()
     {

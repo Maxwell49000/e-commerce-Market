@@ -20,24 +20,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Vérifier si le consentement aux cookies a été donné
-    if (!document.cookie.includes('cookieConsent=true')) {
-        // Show the popup
-        document.getElementById('cookiePopup').style.display = 'block';
-
-        // Action when user accepts cookies
-        document.getElementById('acceptCookies').addEventListener('click', function () {
-            document.cookie = "cookieConsent=true; path=/"; // Set cookie
-            document.getElementById('cookiePopup').style.display = 'none';
-        });
-
-        // Action when user rejects cookies
-        document.getElementById('rejectCookies').addEventListener('click', function () {
-            document.cookie = "cookieConsent=false; path=/"; // Set cookie
-            document.getElementById('cookiePopup').style.display = 'none';
-        });
+    // Vérifie si le consentement aux cookies a déjà été donné
+    if (document.cookie.includes('cookieConsent=true')) {
+        // Si le consentement est déjà donné, on ne montre pas la popup
+        document.getElementById('cookiePopup').style.display = 'none';
+        return; // Arrêter l'exécution du reste du script
     }
+
+    // Si le consentement n'a pas encore été donné, on affiche la popup
+    document.getElementById('cookiePopup').style.display = 'flex';
+
+    // Action pour accepter les cookies
+    document.getElementById('acceptCookies').addEventListener('click', function () {
+        // Enregistre le consentement avec un cookie valide pour 1 an
+        document.cookie = "cookieConsent=true; path=/; max-age=31536000"; // Cookie pour 1 an
+        document.getElementById('cookiePopup').style.display = 'none'; // Cache la popup après acceptation
+    });
+
+    // Action pour refuser les cookies
+    document.getElementById('rejectCookies').addEventListener('click', function () {
+        // Enregistre le refus avec un cookie valide pour 1 an
+        document.cookie = "cookieConsent=false; path=/; max-age=31536000"; // Cookie pour 1 an
+        document.getElementById('cookiePopup').style.display = 'none'; // Cache la popup après refus
+    });
 });
+
+
 
 document.addEventListener('DOMContentLoaded', function () {
     var scrollToTopButton = document.getElementById('scrollToTop');
