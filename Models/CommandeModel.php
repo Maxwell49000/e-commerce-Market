@@ -22,12 +22,6 @@ class CommandeModel extends DbConnect
         return $stmt->execute([$id_commande, $id_produit, $quantite, $prix_unitaire]);
     }
 
-    // // 3️⃣ Mettre à jour le stock des produits
-    // public function mettreAJourStock($id_produit, $quantite)
-    // {
-    //     $stmt = $this->connection->prepare("UPDATE produits SET quantite = quantite - ? WHERE id_produit = ?");
-    //     return $stmt->execute([$quantite, $id_produit]);
-    // }
 
     // 4️⃣ Récupérer les commandes d'un utilisateur
     public function getCommandesByUser($id_utilisateur)
