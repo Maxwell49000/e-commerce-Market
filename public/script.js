@@ -200,42 +200,47 @@ document.addEventListener("DOMContentLoaded", () => {
     products.forEach(product => observer.observe(product));
 });
 
+// Gestion ajout avis:
 document.addEventListener("DOMContentLoaded", function () {
     // Récupérer le formulaire d'avis
     const reviewForm = document.getElementById("reviewForm");
-
+    // Vérifier si le formulaire existe pour éviter les erreurs
     if (reviewForm) {
-        // Ajouter l'écouteur d'événement pour la soumission
+        // Ajoute un écouteur d'événement sur la soumission du formulaire
         reviewForm.addEventListener("submit", function (e) {
+            // Empêcher le rechargement de la page
             e.preventDefault();
 
-            // Créer l'objet FormData à partir du formulaire
+            // Créer un objet FormData contenant les données du formulaire
             const formData = new FormData(reviewForm);
 
-            // Envoyer la requête AJAX
+            // Envoi de la requête AJAX en POST vers le contrôleur PHP en MVC
             fetch('index.php?controller=Avis&action=ajouterAvis', {
                 method: 'POST',
+                // Envoi des données du formulaire
                 body: formData
             })
                 .then(function (response) {
+                    // Conversion de la réponse en JSON
                     return response.json();
                 })
                 .then(function (data) {
                     if (data.success) {
-                        // Afficher un message de succès
+                        // Si l'ajout de l'avis est réussi affiche un message de succès
                         alert("Avis ajouté avec succès !");
 
-                        // Fermer la modale (en utilisant Bootstrap)
+                        // Fermer la modale (si elle est utilisée, ici avec Bootstrap)
                         var myModal = bootstrap.Modal.getInstance(document.getElementById('addReviewModal'));
                         myModal.hide();
 
-                        // Recharger la page pour voir le nouvel avis
+                        // Recharger la page pour afficher le nouvel avis ajouté
                         location.reload();
                     } else {
                         // Afficher un message d'erreur
                         alert("Erreur : " + (data.error || "Une erreur est survenue"));
                     }
                 })
+                // Gestion des erreurs réseau ou serveur
                 .catch(function (error) {
                     console.error("Erreur:", error);
                     alert("Erreur de connexion au serveur");

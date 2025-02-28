@@ -103,35 +103,53 @@
     </div>
 </div>
 <script>
+    // Attend que le DOM soit entièrement chargé avant d'exécuter le script
     document.addEventListener("DOMContentLoaded", function() {
+        // Sélectionne toutes les étoiles ayant la classe "star"
         const stars = document.querySelectorAll(".star");
+        // Sélectionne l'input caché qui stockera la note attribuée
         const hiddenInput = document.getElementById("note");
+        // Sélectionne l'élément qui affichera la note sélectionnée
         const ratingValueDisplay = document.getElementById("rating-value");
 
+        // Parcourt chaque étoile pour lui ajouter des écouteurs d'événements
         stars.forEach(star => {
+            // Événement déclenché lorsque la souris passe sur une étoile
             star.addEventListener("mouseover", function() {
+                // Récupère la note associée à l'étoile survolée
                 const ratingValue = this.getAttribute("data-value");
+                // Met en surbrillance les étoiles correspondantes
                 highlightStars(ratingValue);
             });
 
+            // Événement déclenché lorsque la souris quitte une étoile
             star.addEventListener("mouseout", function() {
+                // Restaure la sélection actuelle basée sur la valeur stockée
                 highlightStars(hiddenInput.value);
             });
 
+            // Événement déclenché lorsqu'on clique sur une étoile
             star.addEventListener("click", function() {
+                // Récupère la valeur de la note sélectionnée
                 const ratingValue = this.getAttribute("data-value");
+                // Stocke cette note dans l'input caché
                 hiddenInput.value = ratingValue;
-                ratingValueDisplay.textContent = ratingValue + " / 5"; // Afficher la note
+                // Met à jour l'affichage de la note
+                ratingValueDisplay.textContent = ratingValue + " / 5";
+                // Met en surbrillance la sélection finale
                 highlightStars(ratingValue);
             });
         });
-
+        // Fonction pour mettre en surbrillance les étoiles en fonction de la note
         function highlightStars(rating) {
+            // Récupère la valeur de chaque étoile
             stars.forEach(star => {
                 const starValue = star.getAttribute("data-value");
                 if (starValue <= rating) {
+                    // Ajoute la classe "selected" aux étoiles activées
                     star.classList.add("selected");
                 } else {
+                    // Retire la classe "selected" des étoiles désactivées
                     star.classList.remove("selected");
                 }
             });
